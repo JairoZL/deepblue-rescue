@@ -2,6 +2,9 @@ package com.deepblue.rescue.domain;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "animals")
 public class Animal {
@@ -29,6 +32,13 @@ public class Animal {
 
     @OneToOne(mappedBy = "animal",fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
     private MedicalRecord medicalRecord;
+
+    @OneToMany(mappedBy = "animal")
+    private List<Treatment> treatments = new ArrayList<>();
+
+    public List<Treatment> getTreatments() {
+        return treatments;
+    }
 
     public void assignMedicalRecord(MedicalRecord medicalRecord) {
         this.medicalRecord = medicalRecord;
