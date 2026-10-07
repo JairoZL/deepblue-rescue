@@ -31,7 +31,7 @@ import java.util.Optional;
 @SpringBootTest
 @Import(TestcontainersConfiguration.class)
 @Transactional
-class PersistenceIntegrationTest {
+class PersistenceIT {
 
     @Autowired
     private RescueCenterRepository rescueCenterRepository;
