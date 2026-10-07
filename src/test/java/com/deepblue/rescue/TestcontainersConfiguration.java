@@ -7,12 +7,15 @@ import org.testcontainers.postgresql.PostgreSQLContainer;
 import org.testcontainers.utility.DockerImageName;
 
 @TestConfiguration(proxyBeanMethods = false)
-class TestcontainersConfiguration {
+public class TestcontainersConfiguration {
+
+    // Versión fija: "latest" hace que el build cambie solo cuando sale una versión nueva
+    private static final String POSTGRES_IMAGE = "postgres:18-alpine";
 
     @Bean
     @ServiceConnection
     PostgreSQLContainer postgresContainer() {
-        return new PostgreSQLContainer(DockerImageName.parse("postgres:latest"));
+        return new PostgreSQLContainer(DockerImageName.parse(POSTGRES_IMAGE));
     }
 
 }

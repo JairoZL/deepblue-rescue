@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.deepblue</groupId>
     <artifactId>deepblue-rescue</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.3.0</version>
     <name>deepblue-rescue</name>
     <description>deepblue-rescue</description>
     <url/>
@@ -86,6 +86,11 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <!-- Tests de integración (*IT): corren en "mvn verify", no en "mvn test" -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
