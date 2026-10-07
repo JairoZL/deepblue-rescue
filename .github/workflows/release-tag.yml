@@ -16,7 +16,7 @@ jobs:
     if: >-
       github.event.pull_request.merged == true &&
       (startsWith(github.head_ref, 'release/') || startsWith(github.head_ref, 'hotfix/'))
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Compute version from branch name
