@@ -36,6 +36,20 @@ jobs:
           chmod +x mvnw
           ./mvnw -B -ntp clean verify
 
+      - name: Test summary
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import glob, xml.etree.ElementTree as ET
+          for kind in ("surefire", "failsafe"):
+              totals = dict(tests=0, failures=0, errors=0, skipped=0)
+              for f in glob.glob(f"target/{kind}-reports/TEST-*.xml"):
+                  root = ET.parse(f).getroot()
+                  for k in totals:
+                      totals[k] += int(root.get(k, 0))
+              print(f"::notice title={kind}::" + ", ".join(f"{k}={v}" for k, v in totals.items()))
+          PY
+
       - name: Upload test reports
         if: failure()
         uses: actions/upload-artifact@v4
