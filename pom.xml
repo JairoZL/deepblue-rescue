@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.deepblue</groupId>
     <artifactId>deepblue-rescue</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.3.0</version>
     <name>deepblue-rescue</name>
     <description>deepblue-rescue</description>
     <url/>
