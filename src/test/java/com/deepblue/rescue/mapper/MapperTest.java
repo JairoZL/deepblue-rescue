@@ -2,6 +2,7 @@ package com.deepblue.rescue.mapper;
 
 import com.deepblue.rescue.domain.Animal;
 import com.deepblue.rescue.domain.AnimalSex;
+import com.deepblue.rescue.domain.Expertise;
 import com.deepblue.rescue.domain.RescueCase;
 import com.deepblue.rescue.domain.RescueCenter;
 import com.deepblue.rescue.domain.RescueStatus;
@@ -10,6 +11,7 @@ import com.deepblue.rescue.domain.Treatment;
 import com.deepblue.rescue.domain.TreatmentType;
 import com.deepblue.rescue.dto.response.AnimalResponse;
 import com.deepblue.rescue.dto.response.RescueCaseResponse;
+import com.deepblue.rescue.dto.response.SpecialistResponse;
 import com.deepblue.rescue.dto.response.TreatmentResponse;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -28,6 +30,7 @@ class MapperTest {
     private final RescueCaseMapper rescueCaseMapper = Mappers.getMapper(RescueCaseMapper.class);
     private final TreatmentMapper treatmentMapper = Mappers.getMapper(TreatmentMapper.class);
     private final AnimalMapper animalMapper = Mappers.getMapper(AnimalMapper.class);
+    private final SpecialistMapper specialistMapper = Mappers.getMapper(SpecialistMapper.class);
 
     @Test
     void shouldMapRescueCaseWithNestedCodes() {
@@ -72,6 +75,34 @@ class MapperTest {
 
         assertThat(response).isEqualTo(new AnimalResponse(5L, "AN-2026-100", "Green Sea Turtle",
                 "Chelonia mydas", AnimalSex.FEMALE, "RES-2026-100", RescueStatus.IN_REHABILITATION));
+    }
+
+    @Test
+    void shouldMapSpecialistWithExpertiseNames() {
+        Specialist specialist = new Specialist("SPEC-001", "Elena", "Vargas", "elena.vargas@deepblue.org", true);
+        specialist.setId(3L);
+        specialist.addExpertise(new Expertise("Marine Biology"));
+        specialist.addExpertise(new Expertise("Veterinary Medicine"));
+
+        SpecialistResponse response = specialistMapper.toResponse(specialist);
+
+        assertThat(response.id()).isEqualTo(3L);
+        assertThat(response.professionalCode()).isEqualTo("SPEC-001");
+        assertThat(response.firstName()).isEqualTo("Elena");
+        assertThat(response.lastName()).isEqualTo("Vargas");
+        assertThat(response.email()).isEqualTo("elena.vargas@deepblue.org");
+        assertThat(response.active()).isTrue();
+        assertThat(response.expertiseAreas()).containsExactlyInAnyOrder("Marine Biology", "Veterinary Medicine");
+    }
+
+    @Test
+    void shouldMapSpecialistWithoutExpertiseAsEmptySet() {
+        Specialist specialist = new Specialist("SPEC-002", "Mateo", "Rios", "mateo.rios@deepblue.org", false);
+
+        SpecialistResponse response = specialistMapper.toResponse(specialist);
+
+        assertThat(response.expertiseAreas()).isNotNull().isEmpty();
+        assertThat(response.active()).isFalse();
     }
 
     private static Animal animal() {

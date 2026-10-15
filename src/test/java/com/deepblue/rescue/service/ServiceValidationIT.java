@@ -38,6 +38,9 @@ class ServiceValidationIT {
     @Autowired
     private AnimalService animalService;
 
+    @Autowired
+    private SpecialistService specialistService;
+
     @Test
     void shouldRejectTreatmentRequestWithEveryFieldInvalid() {
         CreateTreatmentRequest request = new CreateTreatmentRequest(" ", "", null, null, "");
@@ -78,6 +81,15 @@ class ServiceValidationIT {
                 .isInstanceOf(ConstraintViolationException.class);
 
         assertThatThrownBy(() -> animalService.canReceiveTreatment(""))
+                .isInstanceOf(ConstraintViolationException.class);
+    }
+
+    @Test
+    void shouldRejectBlankSpecialistCodeAndExpertiseName() {
+        assertThatThrownBy(() -> specialistService.findByCode(" "))
+                .isInstanceOf(ConstraintViolationException.class);
+
+        assertThatThrownBy(() -> specialistService.findActiveByExpertise(" "))
                 .isInstanceOf(ConstraintViolationException.class);
     }
 
